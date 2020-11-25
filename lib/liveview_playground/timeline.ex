@@ -110,7 +110,7 @@ defmodule LiveviewPlayground.Timeline do
 
   """
   def delete_post(%Post{} = post) do
-    Repo.delete(post)
+    Repo.delete(post) |> broadcast(:post_deleted)
   end
 
   @doc """

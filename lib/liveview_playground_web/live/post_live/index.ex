@@ -36,12 +36,18 @@ defmodule LiveviewPlaygroundWeb.PostLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     post = Timeline.get_post!(id)
-    {:ok, _} = Timeline.delete_post(post)
+    case Timeline.delete_post(post) do
+      {:ok, post} ->
+        File.rm!("priv/static/#{post.photo_urls}")
+        {:noreply, socket}
 
-    {:noreply, assign(socket, :posts, list_posts())}
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :changeset, changeset)}
+    end
   end
 
   @impl true
+
   def handle_info({:post_created, post}, socket) do
     {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   end
@@ -49,6 +55,7 @@ defmodule LiveviewPlaygroundWeb.PostLive.Index do
   def handle_info({:post_updated, post}, socket) do
     {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   end
+
 
   defp list_posts do
     Timeline.list_posts()
