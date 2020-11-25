@@ -7,6 +7,7 @@ defmodule LiveviewPlayground.Timeline.Post do
     field :likes_count, :integer, default: 0
     field :reposts_count, :integer, default: 0
     field :username, :string, default: "Anthony"
+    field :photo_urls, {:array, :string}, default: []
 
     timestamps()
   end
@@ -14,7 +15,7 @@ defmodule LiveviewPlayground.Timeline.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:body])
+    |> cast(attrs, [:body, :photo_urls])
     |> validate_required([:body])
     |> validate_length(:body, min: 2, max: 250)
   end

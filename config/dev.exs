@@ -58,7 +58,7 @@ config :liveview_playground, LiveviewPlaygroundWeb.Endpoint,
 config :liveview_playground, LiveviewPlaygroundWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/[^uploads].*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/liveview_playground_web/(live|views)/.*(ex)$",
       ~r"lib/liveview_playground_web/templates/.*(eex)$"

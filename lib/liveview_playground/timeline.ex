@@ -64,12 +64,18 @@ defmodule LiveviewPlayground.Timeline do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_post(attrs \\ %{}) do
-    %Post{}
+  def create_post(%Post{} = post, attrs, after_save \\ &{:ok, &1}) do
+    post
     |> Post.changeset(attrs)
     |> Repo.insert()
+    |> after_save(after_save)
     |> broadcast(:post_created)
   end
+
+  defp after_save({:ok, post}, func) do
+    {:ok, _post} = func.(post)
+  end
+  defp after_save(error, _func), do: error
 
   @doc """
   Updates a post.
@@ -83,10 +89,11 @@ defmodule LiveviewPlayground.Timeline do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_post(%Post{} = post, attrs) do
+  def update_post(%Post{} = post, attrs, after_save \\ &{:ok, &1}) do
     post
     |> Post.changeset(attrs)
     |> Repo.update()
+    |> after_save(after_save)
     |> broadcast(:post_updated)
   end
 

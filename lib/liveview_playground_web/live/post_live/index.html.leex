@@ -1,4 +1,5 @@
 <h1 class="post">Timeline</h1>
+<span class="post"><%= live_patch "New Post", to: Routes.post_index_path(@socket, :new) %></span>
 
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, LiveviewPlaygroundWeb.PostLive.FormComponent,
@@ -14,5 +15,3 @@
     <%= live_component @socket, LiveviewPlaygroundWeb.PostLive.PostComponent, id: post.id, post: post %>
   <% end %>
 </div>
-
-<span class="post"><%= live_patch "New Post", to: Routes.post_index_path(@socket, :new) %></span>
