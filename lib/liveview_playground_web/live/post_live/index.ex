@@ -47,7 +47,9 @@ defmodule LiveviewPlaygroundWeb.PostLive.Index do
   end
 
   @impl true
-
+  def handle_info({:post_deleted, _post}, socket) do
+    {:noreply, socket}
+  end
   def handle_info({:post_created, post}, socket) do
     {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   end
